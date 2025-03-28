@@ -8,6 +8,7 @@ class Mensaje:
         self.prioridad: int = self.calcular_prioridad()
     
     def calcular_prioridad(self) -> tuple[str, int] :
+        print("______________")
         palabras_clave: dict[str, int] = {
         "duda": 1 ,
         "urgente": 8,
@@ -20,10 +21,12 @@ class Mensaje:
         for clave in palabras_clave:
             if clave in self.mensaje:
                 prioridad += palabras_clave[clave]
+                print(clave, self.mensaje, prioridad)
+
         return prioridad
 
     def __lt__(self, other):
-        return self.prioridad <= other.prioridad
+        return self.prioridad < other.prioridad
 
     def __repr__(self):
         return self.mensaje
@@ -48,12 +51,11 @@ def agragar_a_cola():
     crear_cola = PriorityQueue(orden)
     for mensaje in mensajes_a_recibir:
         crear_objeto_mensaje = Mensaje(mensaje)
-        priorizacion = crear_objeto_mensaje.prioridad
-        crear_cola.enqueue(mensaje)
+        crear_cola.enqueue(crear_objeto_mensaje)
     return crear_cola
 
 ingresar_mensajes(
-    "tengo una duda mesale un mensaje con una ventana que dice error", "cuestion"
+    "tengo una duda mesale un mensaje con una ventana que dice error", "fallos"
 )
 
 
