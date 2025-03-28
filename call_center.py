@@ -37,9 +37,9 @@ def verificar_prioridad():
     return lista_de_mensaje_prioridad
 
 def agragar_a_cola():
-    lista_con_priorida = verificar_prioridad()
+    lista_con_prioridad = verificar_prioridad()
     priorizacion = PriorityQueue("max")
-    for priorizar, prioridad in lista_con_priorida:
+    for priorizar, prioridad in lista_con_prioridad:
         priorizacion.enqueue(priorizar, prioridad)
     return priorizacion
 
