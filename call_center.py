@@ -28,10 +28,20 @@ def leer_mensaje():
 
 def verificar_prioridad():
     lista_mensajes = leer_mensaje()
+    lista_de_mensaje_prioridad: list[tuple[str, int]]=[]
     for mensaje in lista_mensajes:
         for clave in prioridad:
             if clave in mensaje:
-                print(prioridad[clave])
+                mensaje_con_prioridad = (mensaje, prioridad[clave])
+                lista_de_mensaje_prioridad.append(mensaje_con_prioridad)
+    return lista_de_mensaje_prioridad
+
+def agragar_a_cola():
+    lista_con_priorida = verificar_prioridad()
+    priorizacion = PriorityQueue("max")
+    for priorizar, prioridad in lista_con_priorida:
+        priorizacion.enqueue(priorizar, prioridad)
+    return priorizacion
 
 
 ingresar_mensajes(
@@ -41,4 +51,4 @@ ingresar_mensajes(
     "hubo un fallo critico en la pagina arreglenlo por favor", "arreglar_fallo"
 )
 
-verificar_prioridad()
+print(agragar_a_cola())
