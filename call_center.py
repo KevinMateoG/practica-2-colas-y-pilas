@@ -11,11 +11,24 @@ prioridad: dict[str, int] = {
     "error": 6
 }
 
+class Mensaje:
+    def __init__(self, mensaje):
+        self.mensaje: str = mensaje
+    
+    def calcular_prioridad(self) -> tuple[str, int] :
+        for clave in prioridad:
+            if clave in self.mensaje:
+                return prioridad[clave]
+
+    def __repr__(self):
+        return self.mensaje
+
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
-    with open(f"mensajes_call_center\{nombre_archivo}.txt", "w") as archivo:
+    with open(f"mensajes_call_center\{nombre_archivo}.tcrear_objeto_mensajet", "w") as archivo:
         archivo.write(mensaje)
     
+
 def leer_mensaje():
     lista_mensajes: list[str] = []
     directorio = 'mensajes_call_center'
@@ -26,29 +39,22 @@ def leer_mensaje():
             lista_mensajes.append(contenido)
     return lista_mensajes
 
-def verificar_prioridad():
-    lista_mensajes = leer_mensaje()
-    lista_de_mensaje_prioridad: list[tuple[str, int]]=[]
-    for mensaje in lista_mensajes:
-        for clave in prioridad:
-            if clave in mensaje:
-                mensaje_con_prioridad = (mensaje, prioridad[clave])
-                lista_de_mensaje_prioridad.append(mensaje_con_prioridad)
-    return lista_de_mensaje_prioridad
-
 def agragar_a_cola():
-    lista_con_priorida = verificar_prioridad()
-    priorizacion = PriorityQueue("max")
-    for priorizar, prioridad in lista_con_priorida:
-        priorizacion.enqueue(priorizar, prioridad)
-    return priorizacion
+    mensajes_a_recibir = leer_mensaje()
+    crear_cola = PriorityQueue(orden)
+    for mensaje in mensajes_a_recibir:
+        crear_objeto_mensaje = Mensaje(mensaje)
+        priorizacion = crear_objeto_mensaje.calcular_prioridad()
+        crear_cola.enqueue(mensaje, priorizacion)
+    return crear_cola
 
 
 ingresar_mensajes(
     "tengo una emergencia", "ensima"
 )
+
 ingresar_mensajes(
     "hubo un fallo critico en la pagina arreglenlo por favor", "arreglar_fallo"
 )
-
+orden = "max"
 print(agragar_a_cola())
