@@ -48,7 +48,6 @@ def agragar_a_cola():
         crear_cola.enqueue(mensaje, priorizacion)
     return crear_cola
 
-
 ingresar_mensajes(
     "tengo una emergencia", "ensima"
 )
