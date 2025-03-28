@@ -7,12 +7,12 @@ class PriorityQueue:
     self.__priority: str = priority
 
   # agrega al final de la cola
-  def enqueue(self, mensaje: str, prioridad: int):
-    self.__queue.append((mensaje,prioridad))
+  def enqueue(self, mensaje: str):
+    self.__queue.append(mensaje)
     if self.__priority == "min":
-      self.__queue.sort(Key= lambda x: x[1])
+      self.__queue.sort()
     if self.__priority == "max":
-      self.__queue.sort(key=lambda x : x[1], reverse=True)
+      self.__queue.sort(reverse=True)
 
   # retorna y elimina el primer elemento que entró
   def dequeue(self) -> int:
@@ -31,6 +31,3 @@ class PriorityQueue:
 
   def __len__(self):
     return len(self.__queue)
-
-"""def priorizacion(mensaje: tuple) -> int:
-  return mensaje[1]"""
