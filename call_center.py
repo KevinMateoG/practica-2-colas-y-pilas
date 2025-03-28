@@ -5,20 +5,28 @@ from random import randint
 lista_de_experiencia = ["novato", "intermedio", "experto"]
 
 class Agentes:
-    def __init__(self):
+    def __init__(self, mensaje):
         self.id: int = id
         self.nivel_experiencia: str = lista_de_experiencia[randint(0,2)]
         self.estado: str = "disponible"
-        self.tiempo_respuesta: int
+        self.tiempo_respuesta: int = self.calcular_tiempo_respuesta(mensaje)
 
-    def calcular_tiempo_respuest(self):
-        tiempo = 0
+    def calcular_tiempo_respuesta(self, mensaje_recibido):
+        tiempo_estimando = (len(mensaje_recibido.mensaje) / 10) + (mensaje_recibido.prioridad / 2)
+
         if self.nivel_experiencia == "novato":
-            self.tiempo_respuesta= tiempo
+            tiempo_respuesta = tiempo_estimando
+            self.estado = "ocupado"
+        
         elif self.nivel_experiencia == "intermedio":
-            self.tiempo_respuesta = tiempo*0.25
+            tiempo_respuesta = tiempo_estimando*0.25
+            self.estado = "ocupado"
+        
         elif self.nivel_experiencia == "experto":
-            self.tiempo_respuesta = tiempo*0.5
+            tiempo_respuesta = tiempo_estimando*0.5
+            self.estado = "ocupado"
+
+        return tiempo_respuesta
 
 class Mensaje:
     
@@ -62,7 +70,7 @@ def leer_mensaje():
             lista_mensajes.append(contenido)
     return lista_mensajes
 
-def agragar_a_cola():
+def agregar_a_cola():
     mensajes_a_recibir = leer_mensaje()
     crear_cola = PriorityQueue(orden)
     for mensaje in mensajes_a_recibir:
@@ -75,4 +83,6 @@ ingresar_mensajes(
 )
 
 orden = "max"
-print(agragar_a_cola())
+cola = agregar_a_cola()
+agente_1 = Agentes(cola.first())
+print(agente_1.tiempo_respuesta)
