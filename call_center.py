@@ -1,5 +1,24 @@
 from cola_prioritarias import *
 import os
+from random import randint
+
+lista_de_experiencia = ["novato", "intermedio", "experto"]
+
+class Agentes:
+    def __init__(self):
+        self.id: int = id
+        self.nivel_experiencia: str = lista_de_experiencia[randint(0,2)]
+        self.estado: str = "disponible"
+        self.tiempo_respuesta: int
+    
+    def calcular_tiempo_respuest(self):
+        tiempo = 0
+        if self.nivel_experiencia == "novato":
+            self.tiempo_respuesta= tiempo
+        elif self.nivel_experiencia == "intermedio":
+            self.tiempo_respuesta = tiempo*0.25
+        elif self.nivel_experiencia == "experto":
+            self.tiempo_respuesta = tiempo*0.5
 
 class Mensaje:
     
@@ -31,9 +50,11 @@ class Mensaje:
     def __repr__(self):
         return self.mensaje
 
+
+
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
-    with open(f"mensajes_call_center\{nombre_archivo}.tcrear_objeto_mensajet", "w") as archivo:
+    with open(f"mensajes_call_center\{nombre_archivo}.txt", "w") as archivo:
         archivo.write(mensaje)
 
 def leer_mensaje():
@@ -57,6 +78,7 @@ def agragar_a_cola():
 ingresar_mensajes(
     "tengo una duda mesale un mensaje con una ventana que dice error", "fallos"
 )
+
 
 
 orden = "max"
