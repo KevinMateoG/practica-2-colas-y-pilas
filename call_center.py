@@ -57,7 +57,7 @@ class Mensaje:
 
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
-    with open(f"mensajes_call_center\{nombre_archivo}.txt", "w") as archivo:
+    with open(f"mensajes_call_center/{nombre_archivo}.txt", "w") as archivo:
         archivo.write(mensaje)
 
 def leer_mensaje():
@@ -65,7 +65,7 @@ def leer_mensaje():
     directorio = 'mensajes_call_center'
     archivos = os.listdir(directorio)
     for i in archivos:
-        with open(f'mensajes_call_center\{i}', 'r') as archivo:
+        with open(f'mensajes_call_center/{i}', 'r') as archivo:
             contenido = archivo.read()
             lista_mensajes.append(contenido)
     return lista_mensajes
