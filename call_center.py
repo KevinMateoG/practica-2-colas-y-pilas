@@ -1,3 +1,4 @@
+from time import sleep
 from cola_prioritarias import *
 import os
 from random import randint
@@ -86,3 +87,5 @@ orden = "max"
 cola = agregar_a_cola()
 agente_1 = Agentes(cola.first())
 print(agente_1.tiempo_respuesta)
+sleep(agente_1.tiempo_respuesta)
+print("esta listo")
