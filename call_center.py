@@ -10,7 +10,6 @@ class Agentes:
         self.id: int = randint(1, 400)
         self.nivel_experiencia: str = lista_de_experiencia[randint(0,2)]
         self.estado: str = "disponible"
-#        self.tiempo_respuesta: int = self.calcular_tiempo_respuesta(mensaje)
 
     def calcular_tiempo_respuesta(self, mensaje_recibido):
         tiempo_estimando = (len(mensaje_recibido.mensaje) / 10) + (mensaje_recibido.prioridad / 2)
@@ -50,6 +49,9 @@ class Mensaje:
                 prioridad += palabras_clave[clave]
         return prioridad
 
+    def __len__(self):
+        return len(self.mensaje)
+        
     def __lt__(self, other):
         return self.prioridad < other.prioridad
 
