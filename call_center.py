@@ -97,6 +97,7 @@ def agente_con_mensaje(cola: PriorityQueue):
             timepo_de_espera = agente.calcular_tiempo_respuesta(mensaje)
             agente.estado = "ocupado"
             print("---------------------")
+            print(f"el agente:{agente.id} lo esta atendiendo")
             sleep(timepo_de_espera)
             print("PROBLEMA SOLUCIONADO")
         agente.estado = "disponible"
