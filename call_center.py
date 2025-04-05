@@ -56,7 +56,7 @@ class Mensaje:
         return self.prioridad < other.prioridad
 
     def __repr__(self):
-        return str(self.prioridad)
+        return str(self.mensaje)
 
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
@@ -97,7 +97,7 @@ def agente_con_mensaje(cola: PriorityQueue, lista_agentes: list[Agentes]):
             tiempo_de_espera = agente.calcular_tiempo_respuesta(mensaje)
             agente.estado = "ocupado"
             print("---------------------")
-            print(f"el agente {agente.id} esta atendiendo tu mensaje, timepo de respuesta {tiempo_de_espera}")
+            print(f"el agente {agente.id} esta atendiendo tu mensaje, tiempo de respuesta {tiempo_de_espera}")
             sleep(tiempo_de_espera)
             print("PROBLEMA SOLUCIONADO")
         agente.estado = "disponible"
@@ -153,16 +153,24 @@ def conjunto_de_mayor_prioridad(cola: PriorityQueue):
 def atender_primero_y_ultimo(cola: PriorityQueue, lista_agentes):
     cola_con_mayor_prioridad = conjunto_de_mayor_prioridad(cola)
     primer_mensaje = cola_con_mayor_prioridad.first()
-    seleccionar_agente = lista_agentes[randint(0, len(lista_agentes))]
+    seleccionar_agente = lista_agentes[randint(0, len(lista_agentes)-1)]
     tiempo_repuesta =seleccionar_agente.calcular_tiempo_respuesta(primer_mensaje)
-    print(cola_con_mayor_prioridad)
-    print(f"el agente {seleccionar_agente.id} esta atendiendo tu mensaje, timepo de respuesta {tiempo_repuesta}")
-    print("HOLA")
+    print(f"el agente {seleccionar_agente.id} esta atendiendo tu mensaje, tiempo de respuesta {tiempo_repuesta}")
     sleep(tiempo_repuesta)
     print("PROBLEMA SOLUCIONADO")
+    print("---------------------")
+    for _ in range (len(cola_con_mayor_prioridad)):
+        ultimo_mensaje = cola_con_mayor_prioridad.dequeue()
+    seleccionar_agente = lista_agentes[randint(0, len(lista_agentes)-1)]
+    tiempo_repuesta =seleccionar_agente.calcular_tiempo_respuesta(ultimo_mensaje)
+    print(f"el agente {seleccionar_agente.id} esta atendiendo tu mensaje, tiempo de respuesta {tiempo_repuesta}")
+    sleep(tiempo_repuesta)
+    print("PROBLEMA SOLUCIONADO")
+    print("---------------------")
 
 while True:
     requiere_mensaje = input("¿Quieres agregar un nuevo mensaje?, si deseas salir pon la palabra SALIDA: ")
+    
     if requiere_mensaje.lower() == "si":
         texto_del_mensaje = input("¿Que mensaje deseas ingresar?: ")
         nombre_mensaje = input("Pon un titulo al mensaje: ")
@@ -170,10 +178,9 @@ while True:
     if requiere_mensaje.lower() == "salida":
         break
     cola_con_mensaje = agregar_a_cola()
-    print(cola_con_mensaje)
-    print(conjunto_de_mayor_prioridad(cola_con_mensaje))
     lista_agentes = crear_agentes(cola_con_mensaje)
-    agente_con_mensaje(cola_con_mensaje, lista_agentes)
+    
     if requiere_mensaje.lower() == "p":
         atender_primero_y_ultimo(cola_con_mensaje, lista_agentes)
+    agente_con_mensaje(cola_con_mensaje, lista_agentes)
 
