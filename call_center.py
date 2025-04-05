@@ -94,11 +94,11 @@ def agente_con_mensaje(cola: PriorityQueue, lista_agentes: list[Agentes]):
         if agente.estado == "disponible":
             mensaje = cola.dequeue()
             nueva_cola.enqueue(mensaje)
-            timepo_de_espera = agente.calcular_tiempo_respuesta(mensaje)
+            tiempo_de_espera = agente.calcular_tiempo_respuesta(mensaje)
             agente.estado = "ocupado"
             print("---------------------")
-            print(f"el agente:{agente.id} lo esta atendiendo")
-            sleep(timepo_de_espera)
+            print(f"el agente {agente.id} esta atendiendo tu mensaje, timepo de respuesta {tiempo_de_espera}")
+            sleep(tiempo_de_espera)
             print("PROBLEMA SOLUCIONADO")
         agente.estado = "disponible"
     
@@ -107,7 +107,7 @@ def agente_con_mensaje(cola: PriorityQueue, lista_agentes: list[Agentes]):
     print("---------------------")
 
 def conjunto_de_mayor_prioridad(cola: PriorityQueue):
-    tamaño_primer_cola = len(cola)
+    tamaño_primer_cola = len(cola)-1
     aux = PriorityQueue("max")
     primer_mensaje = cola.dequeue()
     segundo_mensaje = cola.dequeue()
@@ -130,31 +130,38 @@ def conjunto_de_mayor_prioridad(cola: PriorityQueue):
                 primer_mensaje = segundo_mensaje
                 segundo_mensaje = cola.dequeue()
                 aux.enqueue(segundo_mensaje)
-            nueva.enqueue(primer_mensaje)
             
+            nueva.enqueue(primer_mensaje)
+
             if tamaño > maximo:
                 maximo = tamaño
                 cola_maxima = nueva
-            
+        
+        else:
+            if primer_mensaje.prioridad == segundo_mensaje.prioridad:
+                tamaño += 1
+                nueva.enqueue(segundo_mensaje)
+            if tamaño > maximo:
+                maximo = tamaño
+                cola_maxima = nueva
+
     for _ in range(len(aux)):
         cola.enqueue(aux.dequeue())
     
     return cola_maxima
 
-def atender_primero_y_ultimo(cola: PriorityQueue):
+def atender_primero_y_ultimo(cola: PriorityQueue, lista_agentes):
     cola_con_mayor_prioridad = conjunto_de_mayor_prioridad(cola)
     primer_mensaje = cola_con_mayor_prioridad.first()
-    lista_de_agentes = crear_agentes(cola)
-    
-    for _ in range(len(cola_con_mayor_prioridad)):
-        ...
+    seleccionar_agente = lista_agentes[randint(0, len(lista_agentes))]
+    tiempo_repuesta =seleccionar_agente.calcular_tiempo_respuesta(primer_mensaje)
+    print(cola_con_mayor_prioridad)
+    print(f"el agente {seleccionar_agente.id} esta atendiendo tu mensaje, timepo de respuesta {tiempo_repuesta}")
+    print("HOLA")
+    sleep(tiempo_repuesta)
+    print("PROBLEMA SOLUCIONADO")
 
-cola = agregar_a_cola()
-print(cola)
-print(conjunto_de_mayor_prioridad(cola))
-atender_primero_y_ultimo(cola)
-
-"""while True:
+while True:
     requiere_mensaje = input("¿Quieres agregar un nuevo mensaje?, si deseas salir pon la palabra SALIDA: ")
     if requiere_mensaje.lower() == "si":
         texto_del_mensaje = input("¿Que mensaje deseas ingresar?: ")
@@ -163,5 +170,10 @@ atender_primero_y_ultimo(cola)
     if requiere_mensaje.lower() == "salida":
         break
     cola_con_mensaje = agregar_a_cola()
+    print(cola_con_mensaje)
+    print(conjunto_de_mayor_prioridad(cola_con_mensaje))
     lista_agentes = crear_agentes(cola_con_mensaje)
-    agente_con_mensaje(cola_con_mensaje)"""
+    agente_con_mensaje(cola_con_mensaje, lista_agentes)
+    if requiere_mensaje.lower() == "p":
+        atender_primero_y_ultimo(cola_con_mensaje, lista_agentes)
+
