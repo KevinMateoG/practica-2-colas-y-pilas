@@ -56,7 +56,7 @@ class Mensaje:
         return self.prioridad < other.prioridad
 
     def __repr__(self):
-        return str(self.mensaje)
+        return str(self.prioridad)
 
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
