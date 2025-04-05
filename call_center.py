@@ -1,5 +1,5 @@
 from time import sleep
-from cola_prioritarias import *
+from cola_prioritarias import PriorityQueue
 import os
 from random import randint
 
@@ -34,7 +34,7 @@ class Mensaje:
         self.mensaje: str = mensaje
         self.prioridad: int = self.calcular_prioridad()
 
-    def calcular_prioridad(self) -> tuple[str, int] :
+    def calcular_prioridad(self):
         palabras_clave: dict[str, int] = {
         "duda": 1 ,
         "urgente": 8,
@@ -56,7 +56,7 @@ class Mensaje:
         return self.prioridad < other.prioridad
 
     def __repr__(self):
-        return self.mensaje
+        return str(self.mensaje)
 
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
@@ -75,21 +75,21 @@ def leer_mensaje():
 
 def agregar_a_cola() -> PriorityQueue:
     mensajes_a_recibir = leer_mensaje()
-    crear_cola = PriorityQueue(orden)
+    crear_cola = PriorityQueue("max")
     for mensaje in mensajes_a_recibir:
         crear_objeto_mensaje = Mensaje(mensaje)
         crear_cola.enqueue(crear_objeto_mensaje)
     return crear_cola
 
-def crear_agentes() -> list[Agentes]:
+def crear_agentes(cola: PriorityQueue) -> list[Agentes]:
     lista_de_agentes = []
-    for i in range(len(cola_con_mensaje)):
+    for i in range(len(cola)):
         agente = Agentes()
         lista_de_agentes.append(agente)
     return lista_de_agentes
 
-def agente_con_mensaje(cola: PriorityQueue):
-    nueva_cola = PriorityQueue(orden)
+def agente_con_mensaje(cola: PriorityQueue, lista_agentes: list[Agentes]):
+    nueva_cola = PriorityQueue("max")
     for agente in lista_agentes:
         if agente.estado == "disponible":
             mensaje = cola.dequeue()
@@ -106,8 +106,57 @@ def agente_con_mensaje(cola: PriorityQueue):
         cola.enqueue(nueva_cola.dequeue())
     print("---------------------")
 
-orden = "max"
-while True:
+def conjunto_de_mayor_prioridad(cola: PriorityQueue):
+    tamaño_primer_cola = len(cola)
+    aux = PriorityQueue("max")
+    primer_mensaje = cola.dequeue()
+    segundo_mensaje = cola.dequeue()
+    aux.enqueue(primer_mensaje)
+    aux.enqueue(segundo_mensaje)
+    tamaño = 1
+    maximo = 1
+    nueva = PriorityQueue("max")
+    for _ in range(tamaño_primer_cola):
+        if len(cola) >= 1:
+            if primer_mensaje.prioridad == segundo_mensaje.prioridad:
+                print(cola)
+                tamaño += 1
+                primer_mensaje = segundo_mensaje
+                segundo_mensaje = cola.dequeue()
+                aux.enqueue(segundo_mensaje)
+            
+            elif primer_mensaje.prioridad != segundo_mensaje.prioridad:
+                tamaño = 1
+                nueva = PriorityQueue("max")
+                primer_mensaje = segundo_mensaje
+                segundo_mensaje = cola.dequeue()
+                aux.enqueue(segundo_mensaje)
+                print(cola)
+            nueva.enqueue(primer_mensaje)
+
+            if tamaño > maximo:
+                maximo = tamaño
+                cola_maxima = nueva
+            
+    for _ in range(len(aux)):
+        cola.enqueue(aux.dequeue())
+    
+    return cola_maxima
+
+def atender_primero_y_ultimo(cola: PriorityQueue):
+    cola_con_mayor_prioridad = conjunto_de_mayor_prioridad(cola)
+    primer_mensaje = cola_con_mayor_prioridad.first()
+    lista_de_agentes = crear_agentes(cola)
+    
+    for _ in range(len(cola_con_mayor_prioridad)):
+        ...
+
+cola = agregar_a_cola()
+print(cola)
+print(conjunto_de_mayor_prioridad(cola))
+atender_primero_y_ultimo(cola)
+
+"""while True:
     requiere_mensaje = input("¿Quieres agregar un nuevo mensaje?, si deseas salir pon la palabra SALIDA: ")
     if requiere_mensaje.lower() == "si":
         texto_del_mensaje = input("¿Que mensaje deseas ingresar?: ")
@@ -116,5 +165,5 @@ while True:
     if requiere_mensaje.lower() == "salida":
         break
     cola_con_mensaje = agregar_a_cola()
-    lista_agentes = crear_agentes()
-    agente_con_mensaje(cola_con_mensaje)
+    lista_agentes = crear_agentes(cola_con_mensaje)
+    agente_con_mensaje(cola_con_mensaje)"""
