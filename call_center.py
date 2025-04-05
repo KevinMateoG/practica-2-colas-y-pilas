@@ -119,7 +119,6 @@ def conjunto_de_mayor_prioridad(cola: PriorityQueue):
     for _ in range(tamaño_primer_cola):
         if len(cola) >= 1:
             if primer_mensaje.prioridad == segundo_mensaje.prioridad:
-                print(cola)
                 tamaño += 1
                 primer_mensaje = segundo_mensaje
                 segundo_mensaje = cola.dequeue()
@@ -131,9 +130,8 @@ def conjunto_de_mayor_prioridad(cola: PriorityQueue):
                 primer_mensaje = segundo_mensaje
                 segundo_mensaje = cola.dequeue()
                 aux.enqueue(segundo_mensaje)
-                print(cola)
             nueva.enqueue(primer_mensaje)
-
+            
             if tamaño > maximo:
                 maximo = tamaño
                 cola_maxima = nueva
