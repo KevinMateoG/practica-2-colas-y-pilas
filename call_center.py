@@ -56,7 +56,7 @@ class Mensaje:
         return self.prioridad < other.prioridad
 
     def __repr__(self):
-        return str(self.mensaje)
+        return str(self.prioridad)
 
 def ingresar_mensajes(mensaje: str, nombre_archivo: str):
     mensaje.lower()
@@ -152,6 +152,7 @@ def conjunto_de_mayor_prioridad(cola: PriorityQueue):
 
 def atender_primero_y_ultimo(cola: PriorityQueue, lista_agentes):
     cola_con_mayor_prioridad = conjunto_de_mayor_prioridad(cola)
+    print(cola_con_mayor_prioridad)
     primer_mensaje = cola_con_mayor_prioridad.first()
     seleccionar_agente = lista_agentes[randint(0, len(lista_agentes)-1)]
     tiempo_repuesta =seleccionar_agente.calcular_tiempo_respuesta(primer_mensaje)
