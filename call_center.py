@@ -169,6 +169,34 @@ def atender_primero_y_ultimo(cola: PriorityQueue, lista_agentes):
     print("PROBLEMA SOLUCIONADO")
     print("---------------------")
 
+def promedio_de_cola(cola: PriorityQueue):
+    aux = PriorityQueue("max")
+    tamaño_mensajes = 0
+    primer_mensaje = cola.dequeue()
+    aux.enqueue(primer_mensaje)
+    for _ in range(len(cola)):
+        if len(cola) >= 0:
+            tamaño_mensajes += primer_mensaje.prioridad
+            primer_mensaje = cola.dequeue()
+            aux.enqueue(primer_mensaje)
+    for _ in range(len(aux)):
+        cola.enqueue(aux.dequeue())
+    return tamaño_mensajes/len(cola)
+
+def eliminar_de_cola_mayor(cola:PriorityQueue):
+    promedio = promedio_de_cola(cola)
+    conjunto_mayor = conjunto_de_mayor_prioridad(cola)
+    promedio -= len(conjunto_mayor)
+    for _ in range(round(promedio)):
+        conjunto_mayor.dequeue()
+    return conjunto_mayor
+
+cola_con_mensaje = agregar_a_cola()
+lista_agentes = crear_agentes(cola_con_mensaje)
+print(cola_con_mensaje)
+print(promedio_de_cola(cola_con_mensaje))
+print(eliminar_de_cola_mayor(cola_con_mensaje))
+"""
 while True:
     requiere_mensaje = input("¿Quieres agregar un nuevo mensaje?, si deseas salir pon la palabra SALIDA: ")
     
@@ -184,4 +212,4 @@ while True:
     if requiere_mensaje.lower() == "p":
         atender_primero_y_ultimo(cola_con_mensaje, lista_agentes)
     agente_con_mensaje(cola_con_mensaje, lista_agentes)
-
+"""
